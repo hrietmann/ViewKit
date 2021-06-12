@@ -23,7 +23,6 @@ public struct HomeView: View {
                 .frame(maxHeight: .infinity)
             Divider()
             HStack {
-                Spacer()
                 ForEach(items) { item in
                     Button(action: { selected = item }) {
                         if selected.id == item.id {
@@ -32,11 +31,12 @@ public struct HomeView: View {
                             item.deselected
                         }
                     }
-                    Spacer()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            .font(.title3)
             .frame(height: 55)
+            .font(.title3)
+            .padding(.horizontal)
         }
         .ignoresSafeArea(.all, edges: .top)
         .ignoresSafeArea(.keyboard, edges: .bottom)
@@ -75,8 +75,12 @@ struct HomeView_Previews: PreviewProvider {
                 deselected: Image(systemName: "suit.heart"),
                 page: Text("Notifications")),
             HomeView.Item(
-                selected: Image(systemName: "sleep.circle.fill"),
-                deselected: Image(systemName: "sleep.circle"),
+                selected: Image(systemName: "star.fill"),
+                deselected: Image(systemName: "star"),
+                page: Text("Hello Bonbon bulle !")),
+            HomeView.Item(
+                selected: Image(systemName: "person.fill"),
+                deselected: Image(systemName: "person").font(.title),
                 page: Text("Hello Bonbon bulle !"))
         )
             .foregroundColor(.black)
