@@ -61,6 +61,9 @@ public struct HTab<Content: View>: View {
                 Spacer()
             }
         }
+        .onAppear {
+            selected = self.selected
+        }
     }
 }
 
