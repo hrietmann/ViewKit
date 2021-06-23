@@ -24,6 +24,6 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "ViewsTests",
-            dependencies: ["Views"]),
+            dependencies: [/*"Views"*/]),
     ]
 )

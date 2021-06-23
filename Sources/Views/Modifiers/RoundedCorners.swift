@@ -20,15 +20,15 @@ fileprivate struct RoundedCorner: Shape {
     }
 }
 
-internal extension View {
-    func corner(radius: CGFloat, to corners: UIRectCorner) -> some View {
-        clipShape( RoundedCorner(radius: radius, corners: corners) )
+public extension View {
+    func round(corners: UIRectCorner, of radius: CGFloat) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
     }
 }
 
 struct RoundedCorner_Previews: PreviewProvider {
     static var previews: some View {
         Rectangle()
-            .corner(radius: 20, to: [.topLeft, .topRight])
+            .round(corners: [.topLeft, .topRight], of: 20)
     }
 }
