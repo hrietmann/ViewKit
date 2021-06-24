@@ -10,7 +10,7 @@ import SwiftUI
 
 
 
-struct BounceButtonStyle: ButtonStyle {
+public struct BounceButtonStyle: ButtonStyle {
 
     let scale: CGFloat
     let animation: Animation?
@@ -23,7 +23,7 @@ struct BounceButtonStyle: ButtonStyle {
         _currentScale = State(wrappedValue: scale)
     }
 
-    func makeBody(configuration: Self.Configuration) -> some View {
+    public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .scaleEffect(currentScale)
             .onChange(of: configuration.isPressed, perform: { value in
@@ -43,7 +43,7 @@ struct BounceButtonStyle: ButtonStyle {
 
 extension ButtonStyle {
     
-    public static func bounce(scale: CGFloat = 0.93, animation: Animation? = .spring()) -> ButtonStyle {
+    public static func bounce(scale: CGFloat = 0.93, animation: Animation? = .spring()) -> BounceButtonStyle {
         BounceButtonStyle(scale: scale, animation: animation)
     }
     
