@@ -17,7 +17,7 @@ public struct BounceButtonStyle: ButtonStyle {
     @State private var currentScale: CGFloat
     
 
-    public init(scale: CGFloat = 0.93, animation: Animation?) {
+    public init(scale: CGFloat = 0.93, animation: Animation? = .spring()) {
         self.scale = scale
         self.animation = animation
         _currentScale = State(wrappedValue: scale)
