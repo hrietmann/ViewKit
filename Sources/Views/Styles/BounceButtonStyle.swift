@@ -20,7 +20,7 @@ public struct BounceButtonStyle: ButtonStyle {
     public init(scale: CGFloat = 0.93, animation: Animation? = .spring()) {
         self.scale = scale
         self.animation = animation
-        _currentScale = State(wrappedValue: scale)
+        _currentScale = State(wrappedValue: 1)
     }
 
     public func makeBody(configuration: Self.Configuration) -> some View {
