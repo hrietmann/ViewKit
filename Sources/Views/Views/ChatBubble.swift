@@ -27,7 +27,7 @@ public struct ChatBubble<Content>: View where Content: View {
             }
         }
         .padding([(direction == .left) ? .leading : .trailing])
-        .padding((direction == .right) ? .leading : .trailing, 80)
+        .padding((direction == .right) ? .leading : .trailing, 60)
     }
 }
 
