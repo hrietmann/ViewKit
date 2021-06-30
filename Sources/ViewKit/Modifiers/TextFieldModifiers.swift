@@ -5,7 +5,8 @@
 //  Created by Hans Rietmann on 23/06/2021.
 //
 
-import UIKit
+#if !os(macOS)
+import SwiftUI
 
 
 extension TextField {
@@ -57,3 +58,4 @@ extension TextField {
         return view
     }
 }
+#endif

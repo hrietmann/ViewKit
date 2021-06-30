@@ -5,7 +5,10 @@
 //  Created by Hans Rietmann on 22/06/2021.
 //
 
+#if !os(macOS)
 import SwiftUI
+
+
 
 public struct TextField: UIViewRepresentable {
 
@@ -34,6 +37,7 @@ public struct TextField: UIViewRepresentable {
     var secureEntry = false
     var keyboardAppearance = UIKeyboardAppearance.default
     var returnKey = UIReturnKeyType.default
+    
     
     public init(text: Binding<String>, editing: Binding<Bool>) {
         _text = text
@@ -83,3 +87,4 @@ struct TextField_Previews: PreviewProvider {
             .placeholder("ldfdf")
     }
 }
+#endif

@@ -12,6 +12,8 @@ import SwiftUI
 
 
 extension View {
+    
+    #if !os(macOS)
     var snapshot: UIImage {
         let controller = UIHostingController(rootView: ignoresSafeArea())
         let view = controller.view
@@ -26,4 +28,5 @@ extension View {
             view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
     }
+    #endif
 }

@@ -5,6 +5,7 @@
 //  Created by Hans Rietmann on 11/06/2021.
 //
 
+#if !os(macOS)
 import SwiftUI
 
 
@@ -32,3 +33,4 @@ struct RoundedCorner_Previews: PreviewProvider {
             .round(corners: [.topLeft, .topRight], of: 20)
     }
 }
+#endif

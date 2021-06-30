@@ -11,7 +11,7 @@ import SwiftUI
 
 
 
-struct GeometryGetter: View {
+struct FrameGetter: View {
     @Binding var rect: CGRect
     let space: CoordinateSpace
     let constantUpdate: Bool
@@ -34,6 +34,6 @@ struct GeometryGetter: View {
 
 extension View {
     public func get(frame: Binding<CGRect>, in space: CoordinateSpace = .global, constantUpdate: Bool = false) -> some View {
-        background(GeometryGetter(rect: frame, space: space, constantUpdate: constantUpdate))
+        background(FrameGetter(rect: frame, space: space, constantUpdate: constantUpdate))
     }
 }
