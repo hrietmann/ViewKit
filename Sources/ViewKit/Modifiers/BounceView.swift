@@ -9,84 +9,58 @@ import Foundation
 import SwiftUI
 
 
-struct TapView: UIViewRepresentable {
+
+struct BounceViewModifier: ViewModifier {
     
-    @Binding var isPressed: Bool
+    let action: () -> ()
+    let scale: CGFloat
     let animation: Animation?
-
-    func makeUIView(context: UIViewRepresentableContext<TapView>) -> TapView.UIViewType {
-        let view = UIView(frame: .zero)
-        let longPress = UILongPressGestureRecognizer(target: context.coordinator,
-                                                     action: #selector(Coordinator.press))
-        longPress.minimumPressDuration = 0
-        view.addGestureRecognizer(longPress)
-        return view
+    @State private var isPressed = false
+    @State private var frame = CGRect.zero
+    
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(isPressed ? scale:1)
+            .gesture(drag)
+            .get(frame: $frame, in: .local, constantUpdate: true)
     }
-
-    class Coordinator: NSObject {
-        var action: () -> ()
-
-        init(_ action: @escaping () -> ()) {
-            self.action = action
-        }
-
-        @objc func press(gesture: UILongPressGestureRecognizer) {
-            if gesture.state == .began || gesture.state == .ended {
+    
+    private var drag: some Gesture {
+        DragGesture(minimumDistance: 0.0)
+            .onChanged { _ in
+                guard let animation = animation else { isPressed = true ; return }
+                withAnimation(animation) { isPressed = true }
+            }
+            .onEnded {  _ in
+                guard let animation = animation else { isPressed = false ; return }
+                withAnimation(animation) { isPressed = false }
+            }
+            .onEnded { gesture in
+                guard frame.contains(gesture.location) else { return }
                 action()
             }
         }
-    }
-
-    func makeCoordinator() -> TapView.Coordinator {
-        return Coordinator {
-            guard let animation = animation else { isPressed.toggle() ; return }
-            withAnimation(animation) {
-                isPressed.toggle()
-            }
-        }
-    }
-
-    func updateUIView(_ uiView: UIView,
-                      context: UIViewRepresentableContext<TapView>) {
-    }
 }
 
-class SingleTouchDownGestureRecognizer: UIGestureRecognizer {
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
-        if self.state == .possible {
-            self.state = .recognized
-        }
-    }
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
-        self.state = .failed
-    }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
-        self.state = .recognized
-    }
-}
-
-struct BounceView<Content: View>: View {
-    
-    let scale: CGFloat
-    let animation: Animation?
-    let content: Content
-    @State private var isPressed = false
+struct MyBouncyView: View {
+    @State private var toggle = false
     
     var body: some View {
-        content
-            .scaleEffect(isPressed ? scale:1)
-            .overlay(TapView(isPressed: $isPressed, animation: animation))
+        Color.red
+            .frame(width: toggle ? 300:150, height: 200)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .shadow(radius: 10)
+            .bounceOnTapGesture {
+                withAnimation(.spring()) {
+                    toggle.toggle()
+                }
+            }
     }
 }
-
 
 struct BounceView_Preview: PreviewProvider {
     static var previews: some View {
-        Color.red
-            .frame(width: 150, height: 200)
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .shadow(radius: 10)
-            .bounceOnTapGesture()
+        MyBouncyView()
     }
 }
 
@@ -94,11 +68,12 @@ struct BounceView_Preview: PreviewProvider {
 extension View {
     
     @ViewBuilder
-    public func bounceOnTapGesture(scale: CGFloat = 0.94, animation: Animation? = .spring(), _ bounce: Bool = true) -> some View {
+    public func bounceOnTapGesture(scale: CGFloat = 0.94, animation: Animation? = .spring(), _ bounce: Bool = true, action: @escaping () -> ()) -> some View {
         if bounce {
-            BounceView(scale: scale, animation: animation, content: self)
+            modifier(BounceViewModifier(action: action, scale: scale, animation: animation))
         } else {
             self
         }
     }
 }
+
