@@ -57,5 +57,11 @@ extension TextField {
         view.returnKey = key
         return view
     }
+    
+    public func onReturn(_ completion: @escaping () -> ()) -> TextField {
+        var view = self
+        view.onReturn = completion
+        return view
+    }
 }
 #endif

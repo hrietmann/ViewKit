@@ -16,13 +16,86 @@ public struct TextField: UIViewRepresentable {
 
         @Binding var text: String
         var didBecomeFirstResponder = false
+        var onReturn: () -> () = {}
 
         init(text: Binding<String>) {
             _text = text
         }
-
-        public func textFieldDidChangeSelection(_ textField: UITextField) {
+        
+        
+        // 1 — Keyboard appearing
+        func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+            /**
+             Printed when :
+             • keyboard appear, before "textFieldDidBeginEditing"
+             */
+            return true
+        }
+        
+        // 2 — Keyboard appeared
+        func textFieldDidBeginEditing(_ textField: UITextField) {
+            /**
+             Printed when :
+             • keyboard appears, after "textFieldShouldBeginEditing"
+             */
+        }
+        
+        // 3 — Text changing
+        func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            /**
+             Printed when :
+             • there is a text change (character added/removed), before "textFieldDidChangeSelection"
+             */
+            return true
+        }
+        
+        // 4 — Text changed
+        func textFieldDidChangeSelection(_ textField: UITextField) {
+            /**
+             Printed when :
+             • there is a text change (character added/removed), after "textField shouldChangeCharactersIn"
+             • selection of the text changes
+             • after textFieldShouldClear, once before the clearing is effective
+             • after textFieldShouldClear, once more after the clearing is effective
+             */
             text = textField.text ?? ""
+        }
+        
+        // 5 — Clearing the text
+        func textFieldShouldClear(_ textField: UITextField) -> Bool {
+            /**
+             Printed when :
+             • the clear button is pressed, before "textFieldDidChangeSelection" is called for the text change
+             */
+            return textField.clearButtonMode != .never
+        }
+        
+        // 6 - Pressing the return key
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            /**
+             Printed when :
+             • pressing the return key, before "textFieldShouldEndEditing"
+             */
+            textField.resignFirstResponder()
+            onReturn()
+            return true
+        }
+        
+        // 7 - Dismissing Keyboard
+        func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+            /**
+             Printed when :
+             • dismissing the keyboard, after "textFieldShouldReturn" (if return key is pressed) and before "textFieldDidEndEditing"
+             */
+            return true
+        }
+        
+        // 8 - Keyboard dismissed
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            /**
+             Printed when :
+             • dismissing the keyboard, after "textFieldShouldEndEditing"
+             */
         }
 
     }
@@ -37,6 +110,7 @@ public struct TextField: UIViewRepresentable {
     var secureEntry = false
     var keyboardAppearance = UIKeyboardAppearance.default
     var returnKey = UIReturnKeyType.default
+    var onReturn: () -> () = {}
     
     
     public init(text: Binding<String>, editing: Binding<Bool>) {
@@ -76,6 +150,11 @@ public struct TextField: UIViewRepresentable {
             uiView.becomeFirstResponder()
             context.coordinator.didBecomeFirstResponder = true
         }
+        if !editing && context.coordinator.didBecomeFirstResponder {
+            uiView.resignFirstResponder()
+            context.coordinator.didBecomeFirstResponder = false
+        }
+        context.coordinator.onReturn = onReturn
     }
 }
 
