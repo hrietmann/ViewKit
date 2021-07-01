@@ -24,7 +24,7 @@ public struct TextField: UIViewRepresentable {
         
         
         // 1 — Keyboard appearing
-        func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
             /**
              Printed when :
              • keyboard appear, before "textFieldDidBeginEditing"
@@ -33,7 +33,7 @@ public struct TextField: UIViewRepresentable {
         }
         
         // 2 — Keyboard appeared
-        func textFieldDidBeginEditing(_ textField: UITextField) {
+        public func textFieldDidBeginEditing(_ textField: UITextField) {
             /**
              Printed when :
              • keyboard appears, after "textFieldShouldBeginEditing"
@@ -41,7 +41,7 @@ public struct TextField: UIViewRepresentable {
         }
         
         // 3 — Text changing
-        func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             /**
              Printed when :
              • there is a text change (character added/removed), before "textFieldDidChangeSelection"
@@ -50,7 +50,7 @@ public struct TextField: UIViewRepresentable {
         }
         
         // 4 — Text changed
-        func textFieldDidChangeSelection(_ textField: UITextField) {
+        public func textFieldDidChangeSelection(_ textField: UITextField) {
             /**
              Printed when :
              • there is a text change (character added/removed), after "textField shouldChangeCharactersIn"
@@ -62,7 +62,7 @@ public struct TextField: UIViewRepresentable {
         }
         
         // 5 — Clearing the text
-        func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        public func textFieldShouldClear(_ textField: UITextField) -> Bool {
             /**
              Printed when :
              • the clear button is pressed, before "textFieldDidChangeSelection" is called for the text change
@@ -71,7 +71,7 @@ public struct TextField: UIViewRepresentable {
         }
         
         // 6 - Pressing the return key
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             /**
              Printed when :
              • pressing the return key, before "textFieldShouldEndEditing"
@@ -82,7 +82,7 @@ public struct TextField: UIViewRepresentable {
         }
         
         // 7 - Dismissing Keyboard
-        func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
             /**
              Printed when :
              • dismissing the keyboard, after "textFieldShouldReturn" (if return key is pressed) and before "textFieldDidEndEditing"
@@ -91,7 +91,7 @@ public struct TextField: UIViewRepresentable {
         }
         
         // 8 - Keyboard dismissed
-        func textFieldDidEndEditing(_ textField: UITextField) {
+        public func textFieldDidEndEditing(_ textField: UITextField) {
             /**
              Printed when :
              • dismissing the keyboard, after "textFieldShouldEndEditing"
