@@ -15,11 +15,12 @@ public struct TextField: UIViewRepresentable {
     public class Coordinator: NSObject, UITextFieldDelegate {
 
         @Binding var text: String
-        var didBecomeFirstResponder = false
+        @Binding var editing: Bool
         var onReturn: () -> () = {}
 
-        init(text: Binding<String>) {
+        init(text: Binding<String>, editing: Binding<Bool>) {
             _text = text
+            _editing = editing
         }
         
         
@@ -38,6 +39,7 @@ public struct TextField: UIViewRepresentable {
              Printed when :
              • keyboard appears, after "textFieldShouldBeginEditing"
              */
+            editing = true
         }
         
         // 3 — Text changing
@@ -96,6 +98,7 @@ public struct TextField: UIViewRepresentable {
              Printed when :
              • dismissing the keyboard, after "textFieldShouldEndEditing"
              */
+            editing = false
         }
 
     }
@@ -133,7 +136,7 @@ public struct TextField: UIViewRepresentable {
     }
 
     public func makeCoordinator() -> TextField.Coordinator {
-        return Coordinator(text: $text)
+        return Coordinator(text: $text, editing: $editing)
     }
 
     public func updateUIView(_ uiView: UITextField, context: UIViewRepresentableContext<TextField>) {
@@ -146,13 +149,10 @@ public struct TextField: UIViewRepresentable {
         uiView.isSecureTextEntry = secureEntry
         uiView.keyboardAppearance = keyboardAppearance
         uiView.returnKeyType = returnKey
-        if editing && !context.coordinator.didBecomeFirstResponder  {
+        if editing  {
             uiView.becomeFirstResponder()
-            context.coordinator.didBecomeFirstResponder = true
-        }
-        if !editing && context.coordinator.didBecomeFirstResponder {
+        } else {
             uiView.resignFirstResponder()
-            context.coordinator.didBecomeFirstResponder = false
         }
         context.coordinator.onReturn = onReturn
     }
