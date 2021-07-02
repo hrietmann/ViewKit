@@ -39,7 +39,7 @@ extension TextField {
              • keyboard appears, after "textFieldShouldBeginEditing"
              */
             DispatchQueue.main.async {
-                editing = true
+                self.editing = true
             }
         }
         
@@ -99,7 +99,9 @@ extension TextField {
              Printed when :
              • dismissing the keyboard, after "textFieldShouldEndEditing"
              */
-            editing = false
+            DispatchQueue.main.async {
+                self.editing = false
+            }
         }
 
     }
