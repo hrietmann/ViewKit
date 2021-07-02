@@ -38,7 +38,9 @@ extension TextField {
              Printed when :
              • keyboard appears, after "textFieldShouldBeginEditing"
              */
-            editing = true
+            DispatchQueue.main.async {
+                editing = true
+            }
         }
         
         // 3 — Text changing
