@@ -63,5 +63,11 @@ extension TextField {
         view.onReturn = completion
         return view
     }
+    
+    public func onClear(_ completion: @escaping () -> ()) -> TextField {
+        var view = self
+        view.onClear = completion
+        return view
+    }
 }
 #endif

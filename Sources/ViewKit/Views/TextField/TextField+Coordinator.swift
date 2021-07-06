@@ -16,6 +16,7 @@ extension TextField {
         @Binding var text: String
         @Binding var editing: Bool
         var onReturn: () -> () = {}
+        var onClear: () -> () = {}
 
         init(text: Binding<String>, editing: Binding<Bool>) {
             _text = text
@@ -70,6 +71,9 @@ extension TextField {
              Printed when :
              • the clear button is pressed, before "textFieldDidChangeSelection" is called for the text change
              */
+            if textField.clearButtonMode != .never {
+                onClear()
+            }
             return textField.clearButtonMode != .never
         }
         

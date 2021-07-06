@@ -24,6 +24,7 @@ public struct TextField: UIViewRepresentable {
     var keyboardAppearance = UIKeyboardAppearance.default
     var returnKey = UIReturnKeyType.default
     var onReturn: () -> () = {}
+    var onClear: () -> () = {}
     
     
     public init(text: Binding<String>, editing: Binding<Bool>) {
@@ -65,6 +66,7 @@ public struct TextField: UIViewRepresentable {
             uiView.resignFirstResponder()
         }
         context.coordinator.onReturn = onReturn
+        context.coordinator.onClear = onClear
     }
 }
 
@@ -74,6 +76,7 @@ struct TextField_Previews: PreviewProvider {
     static var previews: some View {
         TextField(text: .constant(""), editing: .constant(false))
             .placeholder("ldfdf")
+            .clearButtonMode(.whileEditing)
     }
 }
 #endif
